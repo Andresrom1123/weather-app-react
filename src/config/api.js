@@ -1,28 +1,10 @@
 import axios from "axios";
-axios.defaults.baseURL = "https://www.universal-tutorial.com/api/";
-const Token = async () => {
-  const config = {
-    headers: {
-      Accept: "application/json",
-      "api-token":
-        "fw2D-By0Uj7ocJpeHBs8xJiS3vq-yQjOUVb77Qb1332Q-myNOYaEPrbTRWmdokqmM4g",
-      "user-email": "andres@gmail.com",
-    },
-  };
-  const { data } = await axios.get("getaccesstoken", config);
+const apiKey = "ca5c8e63e9099f2ea634d259339d363c";
+const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?`;
 
-  axios.defaults.headers.common[
-    "Authorization"
-  ] = `Bearer ${data["auth_token"]}`;
-};
-export const Countries = async () => {
-  await Token();
-  const { data } = await axios.get("countries");
-  return data;
-};
-
-export const States = async (country) => {
-  await Token();
-  const { data } = await axios.get(`states/${country}`);
+export const WeatherApi = async (lat, lon) => {
+  const { data } = await axios.get(
+    `${weatherUrl}lat=${lat}&lon=${lon}&appid=${apiKey}`
+  );
   return data;
 };
