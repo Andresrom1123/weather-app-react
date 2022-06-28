@@ -4,7 +4,41 @@ import { WeatherApi } from "./config/api";
 
 const Weather = createContext();
 
+const getStorageTheme = () => {
+  let theme = "ligh-theme";
+  if (localStorage.getItem("theme")) {
+    theme = localStorage.getItem("theme");
+  }
+  return theme;
+};
+
+const getStorageContentWeather = () => {
+  let data = [];
+  if (localStorage.getItem("weather-data")) {
+    data = JSON.parse(localStorage.getItem("weather-data"));
+  }
+  return data;
+};
+
+const getStorageWeather = () => {
+  let data = null;
+  if (localStorage.getItem("weather")) {
+    data = JSON.parse(localStorage.getItem("weather"));
+  }
+  return data;
+};
+
 const WeatherContext = ({ children }) => {
+  const [alert, setAlert] = useState({
+    open: false,
+    type: "",
+    msg: "",
+  });
+
+  const showAlert = (show = false, type = "", msg = "") => {
+    setAlert({ show, type, msg });
+  };
+
   const [states, setStates] = useState([]);
   const [state, setState] = useState(null);
 
@@ -12,7 +46,15 @@ const WeatherContext = ({ children }) => {
   const [cities, setCities] = useState([]);
 
   const [loading, setLoading] = useState(false);
+
+  const [theme, setTheme] = useState(getStorageTheme());
   const [checked, setChecked] = useState(false);
+
+  const [contentWeather, setContentWeather] = useState(
+    getStorageContentWeather()
+  );
+  const [weather, setWeather] = useState(getStorageWeather());
+  const [weatherValue, setWeatherValue] = useState(false);
 
   const fetchState = () => {
     const data = State.getStatesOfCountry("MX");
@@ -28,12 +70,31 @@ const WeatherContext = ({ children }) => {
     try {
       const data = await WeatherApi(city.latitude, city.longitude);
       console.log(data);
+      setContentWeather([...contentWeather, { ...data, city: city.name }]);
+      localStorage.setItem(
+        "weather-data",
+        JSON.stringify([...contentWeather, { ...data, city: city.name }])
+      );
       setLoading(false);
+      showAlert(true, "success", "test");
     } catch (error) {
       setLoading(false);
-      console.log(error);
+      showAlert(true, "danger", error.message);
     }
   };
+
+  useEffect(() => {
+    if (theme === "dark-theme") {
+      setChecked(true);
+    }
+    if (checked) {
+      setTheme("light-theme");
+    } else if (!checked) {
+      setTheme("dark-theme");
+    }
+    document.documentElement.className = theme;
+    localStorage.setItem("theme", theme);
+  }, [checked]);
 
   useEffect(() => {
     fetchState();
@@ -50,6 +111,7 @@ const WeatherContext = ({ children }) => {
       fetchWeather();
     }
   }, [city]);
+
   return (
     <Weather.Provider
       value={{
@@ -64,6 +126,15 @@ const WeatherContext = ({ children }) => {
         setCities,
         city,
         state,
+        contentWeather,
+        setContentWeather,
+        weather,
+        setWeather,
+        setWeatherValue,
+        weatherValue,
+        alert,
+        setAlert,
+        showAlert,
       }}
     >
       {children}
