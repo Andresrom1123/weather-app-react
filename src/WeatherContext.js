@@ -68,21 +68,35 @@ const WeatherContext = ({ children }) => {
   const fetchWeather = async () => {
     setLoading(true);
     try {
-      const data = await WeatherApi(city.latitude, city.longitude);
-      console.log(data);
-      setContentWeather([...contentWeather, { ...data, city: city.name }]);
-      localStorage.setItem(
-        "weather-data",
-        JSON.stringify([...contentWeather, { ...data, city: city.name }])
-      );
+      const condition = contentWeather.find((data) => {
+        return city.name === data.city;
+      });
+      if (!condition) {
+        const data = await WeatherApi(city.latitude, city.longitude);
+        console.log(data);
+        setContentWeather([
+          ...contentWeather,
+          { ...data, city: city.name, state: state.name },
+        ]);
+        localStorage.setItem(
+          "weather-data",
+          JSON.stringify([
+            ...contentWeather,
+            { ...data, city: city.name, state: state.name },
+          ])
+        );
+        showAlert(true, "success", `You have added ${city.name}`);
+      } else {
+        showAlert(true, "danger", "You alredy added that city");
+      }
       setLoading(false);
-      showAlert(true, "success", "test");
     } catch (error) {
       setLoading(false);
       showAlert(true, "danger", error.message);
     }
   };
 
+  // theme
   useEffect(() => {
     if (theme === "dark-theme") {
       setChecked(true);
@@ -96,6 +110,7 @@ const WeatherContext = ({ children }) => {
     localStorage.setItem("theme", theme);
   }, [checked]);
 
+  // state & city
   useEffect(() => {
     fetchState();
     if (state) {

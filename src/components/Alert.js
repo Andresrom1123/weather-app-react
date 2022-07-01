@@ -27,7 +27,12 @@ const Alert = () => {
             aria-label="Close"
           ></button>
         </div>
-        <div className="toast-body">{alert.msg}</div>
+        <div
+          className="toast-body -color-neutro"
+          style={{ backgroundColor: "var(--clr-bcg)" }}
+        >
+          {alert.msg}
+        </div>
       </div>
     </div>
   );

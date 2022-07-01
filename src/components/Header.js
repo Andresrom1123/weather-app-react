@@ -5,8 +5,12 @@ import { FaPlus } from "react-icons/fa";
 const Header = () => {
   const { setChecked, checked, setWeatherValue, weatherValue } = WeatherState();
   return (
-    <header className="d-flex py-3 mb-5 px-5 border justify-content-between">
-      <h1>header</h1>
+    <header className="d-flex py-3 mb-5 px-5 shadow justify-content-between">
+      <h1 className="text-capitalize -color-neutro">
+        <span className="-color-primary">w</span>
+        eather
+        <span className="-color-primary"> mx</span>
+      </h1>
       <div>
         <Switch
           color="default"
@@ -14,7 +18,10 @@ const Header = () => {
           onChange={(e) => setChecked(e.target.checked)}
         />
         {weatherValue && (
-          <span className="-pointer" onClick={() => setWeatherValue(false)}>
+          <span
+            className="-pointer -color-neutro"
+            onClick={() => setWeatherValue(false)}
+          >
             <FaPlus />
           </span>
         )}

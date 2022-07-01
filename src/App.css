@@ -8,21 +8,18 @@ Global Styles
   --clr-bcg: #f3f8fe;
   --clr-font: #9dc2f6;
   --clr-primary: #2b7ff2;
-  --clr-secondary: #0367f0;
 }
 
 .dark-theme {
-  --clr-bcg: #3a3d42;
-  --clr-font: #2e3a4b;
-  --clr-primary: #09182d;
-  --clr-secondary: #14253c;
+  --clr-bcg: #282c35;
+  --clr-font: #fff;
+  --clr-primary: #ffa7c4;
 }
 
 .light-theme {
-  --clr-bcg: #f3f8fe;
-  --clr-font: #9dc2f6;
-  --clr-primary: #0367f0;
-  --clr-secondary: #0367f0;
+  --clr-bcg: #fff;
+  --clr-font: #282c35;
+  --clr-primary: #d23669;
 }
 
 *,
@@ -43,6 +40,72 @@ body {
   background: var(--clr-bcg);
 }
 
+/* 
+===========
+Classes
+===========
+*/
+
 .-pointer {
   cursor: pointer;
+}
+
+.-color-primary {
+  color: var(--clr-primary);
+}
+
+.-color-neutro {
+  color: var(--clr-font);
+}
+
+.-bg-primary {
+  background-color: var(--clr-primary);
+}
+
+.-bg-neutro {
+  background-color: var(--clr-font);
+}
+
+/* 
+====================
+App
+====================
+*/
+
+.-search {
+  width: 100%;
+  background-color: transparent;
+  border-color: transparent;
+}
+.-search:focus {
+  background-color: transparent;
+  border-color: var(--clr-font);
+}
+.-search:hover {
+  border-color: var(--clr-font);
+}
+
+.-decorator {
+  border: 1px solid var(--clr-primary);
+  width: 80px;
+  margin-bottom: 1rem;
+}
+
+/* 
+===========
+Header
+===========
+*/
+header h1 {
+  letter-spacing: 3px;
+}
+
+/* 
+===========
+Select
+===========
+*/
+.-auto-complete label,
+.-auto-complete button {
+  color: var(--clr-font);
 }
