@@ -9,7 +9,7 @@ const Alert = () => {
       showAlert();
     }, 3000);
     return () => clearTimeout(timeout);
-  }, [alert, weather, contentWeather]);
+  }, [alert]);
 
   return (
     <div

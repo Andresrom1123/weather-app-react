@@ -96,6 +96,45 @@ const WeatherContext = ({ children }) => {
     }
   };
 
+  const resetData = async (cityData) => {
+    setLoading(true);
+    try {
+      const data = await WeatherApi(cityData.coord.lat, cityData.coord.lon);
+      console.log(data, cityData);
+      if (
+        weather &&
+        cityData.coord.lat === data.coord.lat &&
+        cityData.coord.lon === data.coord.lon
+      ) {
+        localStorage.setItem(
+          "weather",
+          JSON.stringify({
+            ...cityData,
+          })
+        );
+        setWeather({ ...cityData });
+      }
+      const filterWeather = contentWeather.filter((weather) => {
+        return cityData.city !== weather.city;
+      });
+      setContentWeather([
+        { ...data, city: cityData.city, state: cityData.state },
+        ...filterWeather,
+      ]);
+      localStorage.setItem(
+        "weather-data",
+        JSON.stringify([
+          { ...data, city: cityData.city, state: cityData.state },
+          ...filterWeather,
+        ])
+      );
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      showAlert(true, "danger", error.message);
+    }
+  };
+
   // theme
   useEffect(() => {
     if (theme === "dark-theme") {
@@ -150,6 +189,7 @@ const WeatherContext = ({ children }) => {
         alert,
         setAlert,
         showAlert,
+        resetData,
       }}
     >
       {children}

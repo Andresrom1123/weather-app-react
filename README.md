@@ -1,7 +1,3 @@
-Estilos
-
-Loading
-Errores
-search select - styles - data weather
-Mostrar datos
-Imagenes
+routes
+home / error
+Hacer la buena practica

@@ -4,7 +4,7 @@ const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?`;
 
 export const WeatherApi = async (lat, lon) => {
   const { data } = await axios.get(
-    `${weatherUrl}lat=${lat}&lon=${lon}&appid=${apiKey}`
+    `${weatherUrl}lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
   );
   return data;
 };

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import Select from "./components/Select";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -6,6 +6,8 @@ import { WeatherState } from "./WeatherContext";
 import Header from "./components/Header";
 import { MdDelete } from "react-icons/md";
 import Alert from "./components/Alert";
+import WeatherData from "./components/WeatherData";
+import Reset from "./components/Reset";
 
 function App() {
   const [search, setSearch] = useState("");
@@ -19,12 +21,12 @@ function App() {
     weatherValue,
     setWeatherValue,
     showAlert,
+    resetData,
   } = WeatherState();
 
   const setStorageWeather = (data) => {
-    localStorage.setItem("weather", JSON.stringify(data));
-    setWeather(data);
     setWeatherValue(true);
+    resetData(data);
   };
 
   const buttonDelete = (city) => {
@@ -45,7 +47,7 @@ function App() {
     if (weather) {
       setWeatherValue(true);
     }
-  }, [weather]);
+  }, []);
 
   const weatherData = () => {
     return contentWeather.filter(
@@ -58,7 +60,7 @@ function App() {
   return (
     <>
       <Header />
-      <section className="px-5">
+      <section className="px-5 my-5">
         {loading && (
           <LinearProgress
             color="secondary"
@@ -67,15 +69,15 @@ function App() {
             }}
           />
         )}
-        <div className="rounded p-5 shadow">
+        <div className="rounded px-4 py-5 shadow">
           {weatherValue ? (
-            "xd"
+            <WeatherData />
           ) : (
             <>
               <Select />
 
               {!contentWeather.length ? (
-                ""
+                <></>
               ) : (
                 <>
                   <h3 className="-color-neutro text-center mt-3">
@@ -90,26 +92,32 @@ function App() {
                   />
                 </>
               )}
-              {weatherData().map((data, i) => {
-                return (
-                  <div key={i} className="d-flex gap-3 align-items-center">
-                    <div
-                      onClick={() => setStorageWeather(data)}
-                      className="p-4 mt-4 shadow -color-neutro rounded-pill col-11 -pointer"
-                    >
-                      <p className="d-flex align-items-center my-auto">
-                        {data.city}
-                      </p>
+              <div className="mt-4">
+                {weatherData().map((data, i) => {
+                  return (
+                    <div key={i} className="d-flex gap-2 align-items-center">
+                      <div
+                        onClick={() => setStorageWeather(data)}
+                        className="p-4 mt-4 shadow -color-neutro rounded-pill col-11 -pointer"
+                      >
+                        <p className="d-flex align-items-center my-auto">
+                          <span className="-color-primary">{data.city}</span>
+                          <span className="ps-2">{data.main.temp} °C</span>
+                        </p>
+                      </div>
+                      <div className="d-flex flex-column">
+                        <span
+                          onClick={() => buttonDelete(data.city)}
+                          className="-pointer text-danger"
+                        >
+                          <MdDelete />
+                        </span>
+                        <Reset />
+                      </div>
                     </div>
-                    <span
-                      onClick={() => buttonDelete(data.city)}
-                      className="-pointer text-danger"
-                    >
-                      <MdDelete />
-                    </span>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </>
           )}
         </div>
