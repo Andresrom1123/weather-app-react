@@ -1,14 +1,19 @@
+import { useNavigate } from "react-router-dom";
 import { Switch } from "@material-ui/core";
 import { WeatherState } from "../WeatherContext";
 import { FaPlus } from "react-icons/fa";
 import Reset from "./Reset";
 
 const Header = () => {
+  let navigate = useNavigate();
   const { setChecked, checked, setWeatherValue, weatherValue } = WeatherState();
 
   return (
     <header className="d-flex py-3 px-5 shadow justify-content-between">
-      <h1 className="text-capitalize -color-neutro">
+      <h1
+        onClick={() => navigate("/")}
+        className="text-capitalize -color-neutro -pointer"
+      >
         <span className="-color-primary">w</span>
         eather
         <span className="-color-primary"> mx</span>

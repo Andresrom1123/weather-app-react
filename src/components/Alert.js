@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { WeatherState } from "../WeatherContext";
 
 const Alert = () => {
-  const { showAlert, weather, alert, contentWeather } = WeatherState();
+  const { showAlert, alert } = WeatherState();
 
   useEffect(() => {
     const timeout = setTimeout(() => {

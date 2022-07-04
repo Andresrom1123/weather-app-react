@@ -73,7 +73,6 @@ const WeatherContext = ({ children }) => {
       });
       if (!condition) {
         const data = await WeatherApi(city.latitude, city.longitude);
-        console.log(data);
         setContentWeather([
           ...contentWeather,
           { ...data, city: city.name, state: state.name },
@@ -100,19 +99,20 @@ const WeatherContext = ({ children }) => {
     setLoading(true);
     try {
       const data = await WeatherApi(cityData.coord.lat, cityData.coord.lon);
-      console.log(data, cityData);
       if (
         weather &&
-        cityData.coord.lat === data.coord.lat &&
-        cityData.coord.lon === data.coord.lon
+        weather.coord.lat === data.coord.lat &&
+        weather.coord.lon === data.coord.lon
       ) {
         localStorage.setItem(
           "weather",
           JSON.stringify({
-            ...cityData,
+            ...data,
+            city: cityData.city,
+            state: cityData.state,
           })
         );
-        setWeather({ ...cityData });
+        setWeather({ ...data, city: cityData.city, state: cityData.state });
       }
       const filterWeather = contentWeather.filter((weather) => {
         return cityData.city !== weather.city;
