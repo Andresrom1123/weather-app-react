@@ -5,9 +5,9 @@ Global Styles
 */
 
 :root {
-  --clr-bcg: #f3f8fe;
-  --clr-font: #9dc2f6;
-  --clr-primary: #2b7ff2;
+  --clr-bcg: #fff;
+  --clr-font: #282c35;
+  --clr-primary: #d23669;
 }
 
 .dark-theme {
